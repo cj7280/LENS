@@ -1,0 +1,22 @@
+directory_to_render: "/n/fs/rl-cj7280/epr_estimator/datasets/figures_dataset_dump/nbeads_N=16_mode_sweep"
+directory: "/n/fs/rl-cj7280/epr_estimator/datasets/beads_dump/"
+filename:
+    - "beads_dim=1_N=16_delta=90.0_steps=10000000_seed=0_dt=0.01_mode=alternate_dataset.h5"
+    - "beads_dim=1_N=16_delta=90.0_steps=10000000_seed=1_dt=0.01_mode=alternate_dataset.h5"
+    - "beads_dim=1_N=16_delta=90.0_steps=10000000_seed=2_dt=0.01_mode=alternate_dataset.h5"
+    - "beads_dim=1_N=16_delta=90.0_steps=10000000_seed=3_dt=0.01_mode=alternate_dataset.h5"
+    - "beads_dim=1_N=16_delta=90.0_steps=10000000_seed=4_dt=0.01_mode=alternate_dataset.h5"
+resolution:
+  - [1, 500]
+bandwidth_factor:
+  - 1.0
+num_frames_percentage:
+  - 1.0
+dim:
+  - 1
+slice:
+  - True
+shift_displacements:
+  - True
+sum:
+  - True

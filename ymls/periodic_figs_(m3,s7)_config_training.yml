@@ -1,0 +1,99 @@
+command:
+- python
+- -u
+- training.py
+- --num_timesteps
+- '1000000'
+- --batch_size
+- '4096'
+- --log_wandb
+- --use_bias
+- --exp_name
+- sweep_all_2D
+- --normalize_dataset
+- none
+- --use_ln
+- '1'
+- --phase_normalize
+- --fits_in_vram
+- --group_name
+- rep_sweep
+- --linear_network
+- ${linear_network}
+- --repr_fn
+- ${repr_fn}
+- --repr_dim
+- ${repr_dim}
+- --h_dim
+- '256'
+- --num_layers
+- ${num_layers}
+- --seed
+- ${seed}
+- --contrastive_loss_fn
+- ${contrastive_loss_fn}
+- --data_folder_to_analyze
+- ${data_folder_to_analyze}
+- --datasets_to_analyze
+- ${datasets_to_analyze}
+- --energy_fn
+- ${energy_fn}
+- --precision
+- ${precision}
+- --lr
+- ${lr}
+- --patience
+- ${patience}
+- --frac_of_data
+- ${frac_of_data}
+- --render_load
+- --use_sine_activation
+- ${use_sine_activation}
+method: grid
+parameters:
+  contrastive_loss_fn:
+    values:
+    - forward_backward
+  data_folder_to_analyze:
+    values:
+    - /n/fs/rl-cj7280/epr_estimator/datasets/figures_dataset_dump/0_ring_rescale_smaller_dt
+  energy_fn:
+    values:
+    - dot
+  frac_of_data:
+    values:
+    - 1.0
+  linear_network:
+    values:
+    - true
+    - false
+  lr:
+    values:
+    - 3.0e-05
+  num_layers:
+    values:
+    - 2
+  patience:
+    values:
+    - 10
+  precision:
+    values:
+    - highest
+  repr_dim:
+    values:
+    - 1
+    - 2
+    - 4
+    - 8
+    - 16
+  repr_fn:
+    values:
+    - linear_local_subspaces
+  seed:
+    values:
+    - 0
+  use_sine_activation:
+    values:
+    - true
+    - false
+program: training.py

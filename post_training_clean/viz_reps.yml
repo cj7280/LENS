@@ -1,0 +1,20 @@
+directory: "/n/fs/rl-cj7280/epr_code_only/runs_for_paper_figures/"
+run_dirs_to_analyze: "CGL_etd2rk" # Doesn't work with PCA which kind of makes sense
+configs_to_plot: ['config_10', 'config_18']
+plot_type: "scatter"
+x_label: "x"
+y_label: "y"
+plot_title: "EPR"
+plot_reps: "reps" # states, reps, PCA, PCA_rep, EPR_rep_max
+weight_to_plot: "epr_max" # epr or epr_max
+vec_to_plot: "rep_field"
+components_to_plot: [-2, -1]
+animate: True
+height: 200 # in pixels, determines binning in histogram
+figsize: [10, 5]
+condition_dict: {} # oof the typing...
+save_plots: False
+pca: False
+render_flag: False
+normalize: False
+viz_cgl_flag: True

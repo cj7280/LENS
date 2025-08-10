@@ -1,0 +1,24 @@
+name: epr
+channels:
+  - conda-forge
+  - nvidia
+dependencies:
+  - python=3.10
+  - jax=0.4.23
+  - jaxlib=0.4.23=cuda120*
+  - flax=0.7.4
+  - numpy=1.26.4
+  - scipy=1.12.0
+  - pytorch
+  - matplotlib
+  - imageio
+  - pip
+  - pip:
+    - tyro
+    - wandb==0.17.9
+    - wandb_osh==1.2.2
+    - brax==0.10.1
+    - mediapy==1.2.2
+    - pyyaml
+    - h5py
+    - torch

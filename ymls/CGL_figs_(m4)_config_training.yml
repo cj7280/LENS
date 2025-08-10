@@ -1,0 +1,87 @@
+command:
+- python
+- -u
+- training.py
+- --num_timesteps
+- '100000'
+- --batch_size
+- '1024'
+- --log_wandb
+- --exp_name
+- bugfix_config
+- --use_ln
+- '0'
+- --use_bias
+- --normalize_dataset
+- ${normalize_dataset}
+- --fits_in_vram
+- --group_name
+- hyperparam_sweep_1
+- --repr_fn
+- ${repr_fn}
+- --repr_dim
+- ${repr_dim}
+- --h_dim
+- '256'
+- --num_layers
+- '2'
+- --seed
+- ${seed}
+- --contrastive_loss_fn
+- forward_backward
+- --data_folder_to_analyze
+- ${data_folder_to_analyze}
+- --energy_fn
+- dot
+- --precision
+- highest
+- --lr
+- ${lr}
+- --patience
+- '7'
+- --cnn_layer_sizes
+- ${cnn_layer_sizes}
+- --net_shape
+- ${net_shape}
+- --coord_scale
+- '10'
+- --use_cnn
+- --render_load
+- --linear_network
+- ${linear_network}
+command_template:
+- python
+- training.py
+method: grid
+parameters:
+  cnn_layer_sizes:
+    values:
+    - 32,64,128
+  data_folder_to_analyze:
+    values:
+    - /n/fs/rl-cj7280/epr_estimator/datasets/figures_dataset_dump/CGL_etd2rk
+  linear_network:
+    values:
+    - false
+  lr:
+    values:
+    - 3.0e-05
+  net_shape:
+    values:
+    - flatten
+  normalize_dataset:
+    values:
+    - none
+  repr_dim:
+    values:
+    - 2
+    - 4
+    - 8
+    - 16
+  repr_fn:
+    values:
+    - linear_local_subspaces
+  seed:
+    values:
+    - 0
+program: training.py
