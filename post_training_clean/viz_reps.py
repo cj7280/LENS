@@ -14,11 +14,11 @@ import logging
 import numpy as np
 import jax.numpy as jnp
 import jax
+import yaml
 
 # Imports from epr_estimator
 sys.path.append('/n/fs/rl-cj7280/epr_for_release')
 from utils import update_args_json
-from plotting_run_results.utils import read_yml
 from src.networks import make_cl_networks
 from dataset_creation.utils import generate_dataset, generate_dataset_render
 from post_training_clean.post_training_utils import normalize_data, load_model_params, load_config, create_cgl_gifs
@@ -76,8 +76,8 @@ def load_data(config_dir, parent_dir, dataset_filepath, render_flag=False, viz_c
     Load model params and corresponding dataset.
 
     Parameters:
-        config_dir (str): Directory containing the config file.
-        parent_dir (str): Parent directory containing the config file.
+        config_dir (str): Config directory containing the config file.
+        parent_dir (str): Parent directory containing the config directory.
         dataset_filepath (str): Path to the dataset file.
         render_flag (bool): Whether to render the dataset.
         viz_cgl_flag (bool): Whether to visualize the dataset.
@@ -120,7 +120,8 @@ def load_data(config_dir, parent_dir, dataset_filepath, render_flag=False, viz_c
 def main():
     """Main execution function."""
     # Read yaml file with log file paths
-    config = read_yml(args.current_folder + '/' + args.config_file)
+    with open(args.current_folder + '/' + args.config_file, 'r') as file:
+        config = yaml.safe_load(file)
 
     # Get configuration parameters.
     run_dir = config['run_dirs_to_analyze']
