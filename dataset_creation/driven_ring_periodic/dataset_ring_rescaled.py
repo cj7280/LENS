@@ -150,17 +150,18 @@ def run_simulation(filename, U0, kappa, D, dt, save_every, max_episode_steps, nu
     key, subkey = jax.random.split(key)
     current_x, _ = simulate_trajectory_batch(current_x, subkey, U0, kappa, D, dt, burn_in_steps)
 
-    num_saved = (total_steps + save_every - 1) // save_every
+    num_saved_frames = (total_steps + save_every - 1) // save_every
 
     with h5py.File(filename, 'w') as f:
         logging.info(f"Writing simulation data to file: {filename}")
         f.create_dataset('EPR', data=np.array(epr_analytical, dtype=np.float32))
-        # Initialize saved dataset. 
-        # Shape of dataset: (num_saved, 1)
-        obs_dataset = f.create_dataset('Observations', shape=(num_saved, 1), dtype=np.float32)
 
-        global_frame_counter = 0
-        saved_frame_counter = 0
+        # Initialize saved dataset. 
+        # Shape of dataset: (num_saved_frames, 1)
+        obs_dataset = f.create_dataset('Observations', shape=(num_saved_frames, 1), dtype=np.float32)
+
+        steps_done = 0
+        frames_saved = 0
         episode_batches = max_episode_steps // batch_size
         episode_remainder = max_episode_steps % batch_size
 
@@ -169,34 +170,34 @@ def run_simulation(filename, U0, kappa, D, dt, save_every, max_episode_steps, nu
         for episode in range(num_episodes):
             key, subkey = jax.random.split(key)
 
-            for b in range(episode_batches):
+            for _ in range(episode_batches):
                 key, subkey = jax.random.split(subkey)
                 current_x, xs = simulate_trajectory_batch(current_x, key, U0, kappa, D, dt, batch_size)
 
                 # Get save indices.
-                offset = -global_frame_counter % save_every
+                offset = -steps_done % save_every
                 save_indices = np.arange(offset, batch_size, save_every)
 
                 # Save xs.
                 num_to_save = len(save_indices)
-                obs_dataset[saved_frame_counter:saved_frame_counter + num_to_save, 0] = xs[save_indices, 0]
+                obs_dataset[frames_saved:frames_saved + num_to_save, 0] = xs[save_indices, 0]
 
-                saved_frame_counter += num_to_save
-                global_frame_counter += batch_size
+                frames_saved += num_to_save
+                steps_done += batch_size
 
             # Remainder steps that don't fit into a batch.
             if episode_remainder > 0:
                 key, subkey = jax.random.split(subkey)
                 current_x, xs = simulate_trajectory_batch(current_x, key, U0, kappa, D, dt, episode_remainder)
-                offset = -global_frame_counter % save_every
+                offset = -steps_done % save_every
                 save_indices = np.arange(offset, episode_remainder, save_every)
 
                 num_to_save = len(save_indices)
-                obs_dataset[saved_frame_counter:saved_frame_counter + num_to_save, 0] = xs[save_indices, 0]
-                saved_frame_counter += num_to_save
-                global_frame_counter += episode_remainder
+                obs_dataset[frames_saved:frames_saved + num_to_save, 0] = xs[save_indices, 0]
+                frames_saved += num_to_save
+                steps_done += episode_remainder
 
-            logging.info(f"Saved frames {saved_frame_counter}/{num_saved}.")
+            logging.info(f"Saved frames {frames_saved}/{num_saved_frames}.")
 
         f.flush()
 

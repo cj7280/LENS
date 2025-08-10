@@ -181,8 +181,6 @@ def run_simulation(filename, num_episodes, max_episode_steps, A, D, C, dt, N, ke
 
         # Loop over episodes.
         for episode in range(num_episodes):
-            logging.info(f"Starting episode {episode+1}/{num_episodes}")
-
             # For each episode, run exactly max_episode_steps steps in batches.
             key, subkey = jax.random.split(key)
 
@@ -192,21 +190,16 @@ def run_simulation(filename, num_episodes, max_episode_steps, A, D, C, dt, N, ke
                 current_x, xs = simulate_trajectory_batch(current_x, current_key, A, dt, F, batch_size, dim=dim)
 
                 # Store batch. 
-                start_idx = frames_saved
-                end_idx = frames_saved + batch_size
-                obs_dataset[start_idx:end_idx, :, :] = xs  # (batch_size, N, dim)
-                frames_saved = end_idx
+                obs_dataset[frames_saved:frames_saved + batch_size, :, :] = xs  # (batch_size, N, dim)
+                frames_saved += batch_size
 
             # Remainder steps.
             if episode_remainder > 0:
                 current_key, subkey = jax.random.split(subkey)
                 current_x, xs = simulate_trajectory_batch(current_x, current_key, A, dt, F, episode_remainder, dim=dim)
 
-                start_idx = frames_saved
-                end_idx = frames_saved + episode_remainder
-
-                obs_dataset[start_idx:end_idx, :, :] = xs  # (episode_remainder, N)
-                frames_saved = end_idx
+                obs_dataset[frames_saved:frames_saved + episode_remainder, :, :] = xs  # (episode_remainder, N)
+                frames_saved += episode_remainder
 
             logging.info(f"Saved frames {frames_saved}/{total_observations}.")
 
