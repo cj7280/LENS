@@ -15,6 +15,7 @@ import os
 import imageio
 from matplotlib import pyplot as plt
 
+# TODO: clean up normalization code. Currently a lot of intermediate calculations done here from bug-fixing. 
 def normalize_data(config_namedtuple, train_dataset, val_dataset):
     """
     Normalize datasets based on configuration. 
