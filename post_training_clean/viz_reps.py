@@ -17,11 +17,10 @@ import jax
 import yaml
 
 # Imports from epr_estimator
-sys.path.append('/n/fs/rl-cj7280/epr_for_release')
-from utils import update_args_json
-from src.networks import make_cl_networks
-from dataset_creation.utils import generate_dataset, generate_dataset_render
-from post_training_clean.post_training_utils import normalize_data, load_model_params, load_config, create_cgl_gifs
+from ..utils import update_args_json
+from ..src.networks import make_cl_networks
+from ..dataset_creation.utils import generate_dataset, generate_dataset_render
+from post_training_utils import normalize_data, load_model_params, load_config, create_cgl_gifs
 
 jax.config.update("jax_default_matmul_precision", "highest")
 
@@ -127,9 +126,6 @@ def main():
     run_dir = config['run_dirs_to_analyze']
     directory = config['directory']
     configs_to_plot = config.get('configs_to_plot', [])
-    components_to_plot = config['components_to_plot']
-    save_plots = config['save_plots']
-    pca = config['pca']
     render_flag = config['render_flag']
     viz_cgl_flag = config['viz_cgl_flag']
     condition_dict = config['condition_dict']
@@ -174,12 +170,6 @@ def main():
 
         # Update config_namedtuple with mean and std
         config_namedtuple = config_namedtuple._replace(mean=mean, std=std)
-
-        logging.info(f"Shape of x: {x.shape}")
-        logging.info(f"Shape of y: {y.shape}")
-        logging.info(f"Type of NN params: {model_params['resnet']['Dense_0']['kernel'].dtype}")
-        logging.info(f"Type of x: {x.dtype}")
-        logging.info(f"Type of y: {y.dtype}")
         
         # Create network and apply
         cl_network = make_cl_networks(config=config_namedtuple)
