@@ -27,7 +27,6 @@ jax.config.update("jax_default_matmul_precision", "highest")
 ################################################################################
 
 def get_parameters_by_index(config, index):
-    """Get combination of params from config based on index."""
     keys = [key for key in config.keys() if key != "directory"]
     sizes = [len(config[key]) for key in keys]
     total_combinations = np.prod(sizes)
@@ -50,9 +49,9 @@ def load_model_params(config_dir, parent_dir, dataset_filepath, render_flag=Fals
     """Load model parameters from checkpoint files."""
     # Load model params
     run_filepath = parent_dir + '/' + config_dir
-    config_file = run_filepath + '/args.json'
 
     # Gather both checkpoint types: ones with and without '_vars'
+    # TODO: just save on vars file in train.py. 
     ckpt_files = glob.glob(run_filepath + '/ckpt/step_*.pkl')
     ckpt_files_vars = [f for f in ckpt_files if '_vars' in os.path.basename(f)]
     ckpt_files_nonvars = [f for f in ckpt_files if '_vars' not in os.path.basename(f)]

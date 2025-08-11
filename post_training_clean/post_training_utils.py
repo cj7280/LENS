@@ -256,7 +256,7 @@ def create_cgl_gifs(val_dataset, run_filepath, num_frames=10000):
         # Flatten, apply the colormap, and reshape.
         color_phase = cmap(phase_norm.ravel()).reshape(phase_norm.shape + (4,))[:, :, :3]
 
-        # Convert to uint8 for imageio (values in [0, 255])
+        # Convert to uint8 for imageio (values in [0, 255]). Note that this is only for visualization! Not for training.
         phase_uint8 = np.ascontiguousarray((color_phase * 255).astype(np.uint8))
         gif_frames.append(phase_uint8)
         sine_uint8 = np.ascontiguousarray(((frame[..., 1] + 1) / 2 * 255).astype(np.uint8))

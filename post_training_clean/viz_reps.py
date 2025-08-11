@@ -17,10 +17,9 @@ import jax
 import yaml
 
 # Imports from epr_estimator
-from ..utils import update_args_json
-from ..src.networks import make_cl_networks
-from ..dataset_creation.utils import generate_dataset, generate_dataset_render
-from post_training_utils import normalize_data, load_model_params, load_config, create_cgl_gifs
+from src.networks import make_cl_networks
+from dataset_creation.utils import generate_dataset, generate_dataset_render
+from post_training_utils import normalize_data, load_model_params, load_config, create_cgl_gifs, update_args_json
 
 jax.config.update("jax_default_matmul_precision", "highest")
 

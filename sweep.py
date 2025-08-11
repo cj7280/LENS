@@ -2,9 +2,10 @@
 sweep.py generates hyperparameter combinations and runs the training loop from training.py.
 
 Functionality is the same as wandb sweep and expects the same config file format,
-but with a few tweaks. For offline compute nodes. Supports grid search.
+but with a few tweaks. *****For offline compute nodes.***** For online compute nodes,
+you can just use the normal wandb sweep functionality with some modifications for specifying individual dataset files. 
 
-Code based off of the wandb sweep functionality for offline compute nodes.
+Code based off of the wandb sweep functionality.
 """
 
 from typing import Any, Dict, List, Optional, Tuple, Union
@@ -149,6 +150,8 @@ def construct_command(
                 param_value = hyperparams[param_name]
 
                 # Boolean flags
+                # These are flag that, if raised, should return True. Needs to handle both
+                # presence of flag and sweep over True and False values of flag. 
                 if isinstance(param_value, bool):
                     # Include flag only if True
                     if param_value:
@@ -330,6 +333,7 @@ def run_hyperparameter_sweep(
             combined_config = {**base_args, **hyperparams}
 
             # File locking to prevent race conditions
+            # TODO: check if there's a better way to do this. 
             config_file_path = os.path.join(run_dir_slurm, 'config_dict.json')
             config_key = f"config_{job_index if job_index is not None else idx}"
             
