@@ -223,9 +223,8 @@ def load_config(config_file_path):
     """
     config = json.load(open(config_file_path))
     config = convert_config_types(config)
-    config['mean'] = 0.0
+    config['mean'] = 0.0 # TODO: add mean and std to the actual saved config, to not have to normalize during analysis. 
     config['std'] = 1.0
-    config['convert_to_sin_cos'] = False
     
     config_namedtuple = namedtuple('x', config.keys())(*config.values())
     return config_namedtuple
