@@ -10,3 +10,11 @@ or run the following which directly creates the environment from the yaml:
 ```bash
 conda env create -f environment.yml
 ```
+
+A todo is to clean up the the environment and get rid of brax. 
+
+## File organization
+
+All main training files live in `src` folder and `training.py` file.
+
+The `dataset_creation` folder contains code to generate harmonically-coupled beads, render these beads, simulate 2D Complex Ginzburg-Landau dynamics, and simulate a driven bead in a periodic potential.
