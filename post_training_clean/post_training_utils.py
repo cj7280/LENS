@@ -15,6 +15,46 @@ import os
 import imageio
 from matplotlib import pyplot as plt
 
+import json
+import os
+
+def update_args_json(config_dict_path):
+    """
+    Update args json with config_dict data_[INSERT PARAM] fields.
+
+    Parameters:
+        config_dict_path (str): Path to the config_dict file.
+
+    Returns:
+        None
+    """
+    # Get config dict file.
+    with open(config_dict_path, 'r') as f:
+        config_dict = json.load(f)
+
+    # Iterate through each config in the config_dict 
+    for config_name, config_data in ((k,v) for k,v in config_dict.items() if k.startswith('config_')):
+        # Get data_[INSERT PARAM] fields. This is the labeling for simulation parameters.
+        data_fields = {k: v for k, v in config_data.items() if k.startswith('data_')}
+        
+        # Define the path to the corresponding args.json file
+        config_folder = os.path.join(os.path.dirname(config_dict_path), config_name)
+        args_json_path = os.path.join(config_folder, 'args.json')
+        
+        # Load args file.
+        if os.path.exists(args_json_path):
+            with open(args_json_path, 'r') as f:
+                args_data = json.load(f)
+        else:
+            raise FileNotFoundError(f"args.json file not found in {config_folder}")
+        
+        # Update args file with the data_[INSERT PARAM] fields.
+        args_data.update(data_fields)
+        
+        # Save updated args. 
+        with open(args_json_path, 'w') as f:
+            json.dump(args_data, f, indent=4)
+
 # TODO: clean up normalization code. Currently a lot of intermediate calculations done here from bug-fixing. 
 def normalize_data(config_namedtuple, train_dataset, val_dataset):
     """
