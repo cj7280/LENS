@@ -19,7 +19,7 @@ import re
 
 from dataset_creation.utils import generate_dataset, generate_dataset_render
 from utils import create_parser, MetricsRecorder, setup_logging
-from src import train_file_og
+from epr_for_release.src import train
 from post_training_clean.post_training_utils import normalize_data
 
 def main(args): 
@@ -192,7 +192,7 @@ def main(args):
         metrics_recorder.log_wandb()
 
     # Call training loop.
-    params, metrics = train_file_og.train(
+    params, metrics = train.train(
         dataset=train_dataset,
         dataset_eval=val_dataset,
         progress_fn=progress,
