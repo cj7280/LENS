@@ -14,9 +14,5 @@ num_frames_percentage:
   - 1.0
 dim:
   - 1
-slice:
-  - True
 shift_displacements:
-  - True
-sum:
   - True

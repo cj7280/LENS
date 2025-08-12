@@ -19,8 +19,8 @@ import argparse
 import yaml 
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
-sys.path.append('/n/fs/rl-cj7280/epr_estimator')
-from dataset_creation.utils import generate_dataset_render
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from utils import generate_dataset_render
 
 ################################################################################
 # Parameter handling
@@ -152,8 +152,6 @@ if __name__ == "__main__":
     # Initialize parameters.
     num_frames_percentage = params["num_frames_percentage"] # Percentage of frames to render
     shift_displacements = params["shift_displacements"] # Whether to shift displacements for rendering so beads don't overlap.
-    sum = params["sum"] # Whether to sum over beads
-    slice = params["slice"] # Whether to slice through beads
     resolution = params["resolution"] # Resolution of the image
     bandwidth_factor = params["bandwidth_factor"] # Bandwidth factor for the Gaussian kernel
     filename_to_render = params["filename"] # List of filenames to render
@@ -182,11 +180,11 @@ if __name__ == "__main__":
     i = jnp.linspace(MIN, MAX, WIDTH)
 
     # Render test data. 
-    process_and_save_gpu(val_dataset, filename, 'data_test', MIN, MAX, WIDTH, i, bandwidth_factor, slice=slice, sum=sum)
+    process_and_save_gpu(val_dataset, filename, 'data_test', MIN, MAX, WIDTH, i, bandwidth_factor)
     logging.info("Finished rendering test data. Processing train data...")
 
     # Render train data. 
-    process_and_save_gpu(train_dataset, filename, 'data_train', MIN, MAX, WIDTH, i, bandwidth_factor, slice=slice, sum=sum)
+    process_and_save_gpu(train_dataset, filename, 'data_train', MIN, MAX, WIDTH, i, bandwidth_factor)
     logging.info("Finished rendering all data.")
 
     # Add EPR to dataset.
